@@ -28,6 +28,26 @@ class _DemoFuturePageState extends State<DemoFuturePage> {
     //     .catchError((error) => showMessage(error.toString()));
 
     // 3: Sử dụng async await
+    var resultFuture = Future.sync(() async {
+      try {
+        var value1 = await calculatePlus(5, 10);
+        var value2 = await calculateMinus(value1, 10);
+        return value2;
+      } catch(e) {
+        showMessage(e.toString());
+      }
+    });
+
+    resultFuture
+          .then((value) => showMessageDialog(value.toString()));
+  }
+
+  Future<int> calculatePlus(int a, int b) {
+    return Future.value(a + b);
+  }
+
+  Future calculateMinus(int a, int b) {
+    return Future.value(a - b);
   }
 
   void showMessageDialog(String message) {
