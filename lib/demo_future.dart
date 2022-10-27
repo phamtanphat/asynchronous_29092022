@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:isolate';
 
 import 'package:flutter/material.dart';
@@ -43,8 +44,15 @@ class _DemoFuturePageState extends State<DemoFuturePage> {
   }
 
   Future<int> calculatePlus(int a, int b) {
-    return Future.value(a + b);
+    Completer<int> completer = Completer();
+    Future.delayed(Duration(seconds: 1), (){
+      Future.delayed(Duration(seconds: 2), (){
+        completer.complete(a + b);
+      });
+    });
+    return completer.future;
   }
+
 
   Future calculateMinus(int a, int b) {
     return Future.value(a - b);
