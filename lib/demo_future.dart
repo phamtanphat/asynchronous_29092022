@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 class DemoFuturePage extends StatefulWidget {
 
@@ -12,9 +14,20 @@ class _DemoFuturePageState extends State<DemoFuturePage> {
     super.didUpdateWidget(oldWidget);
 
     // 1: Delay
-    Future.delayed(Duration(seconds: 1), (){
-      showMessageDialog("Đã đợi sau 1s");
-    });
+    // Future.delayed(Duration(seconds: 1), (){
+    //   showMessageDialog("Đã đợi sau 1s");
+    // });
+
+    // 2: Hứng kết quả future
+    // var future = Future.delayed(Duration(seconds: 1), () {
+    //   throw Exception("Lỗi");
+    // });
+    //
+    // future
+    //     .then((value) => showMessageDialog(value.toString()))
+    //     .catchError((error) => showMessage(error.toString()));
+
+    // 3: Sử dụng async await
   }
 
   void showMessageDialog(String message) {
