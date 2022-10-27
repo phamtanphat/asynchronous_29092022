@@ -10,6 +10,8 @@ class DemoFuturePage extends StatefulWidget {
 
 class _DemoFuturePageState extends State<DemoFuturePage> {
 
+  Future? resultFuture;
+
   @override
   void didUpdateWidget(covariant DemoFuturePage oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -29,7 +31,7 @@ class _DemoFuturePageState extends State<DemoFuturePage> {
     //     .catchError((error) => showMessage(error.toString()));
 
     // 3: Sử dụng async await
-    var resultFuture = Future.sync(() async {
+    resultFuture = Future.sync(() async {
       try {
         var value1 = await calculatePlus(5, 10);
         var value2 = await calculateMinus(value1, 10);
@@ -38,9 +40,6 @@ class _DemoFuturePageState extends State<DemoFuturePage> {
         showMessage(e.toString());
       }
     });
-
-    resultFuture
-          .then((value) => showMessageDialog(value.toString()));
   }
 
   Future<int> calculatePlus(int a, int b) {
@@ -89,7 +88,32 @@ class _DemoFuturePageState extends State<DemoFuturePage> {
       appBar: AppBar(
         title: Text("Demo Future"),
       ),
-      body: Container(),
+      body: Container(
+        child: FutureBuilder(
+          future: resultFuture,
+          builder: (context, snapshot){
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            }
+            switch(snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.lightBlue,
+                  ),
+                );
+              case ConnectionState.done:
+                return Center(
+                  child: Text(snapshot.data.toString()),
+                );
+              default:
+                return Container();
+            }
+          },
+        ),
+      ),
     );
   }
 }
